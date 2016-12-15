@@ -1,31 +1,44 @@
 #include "HanoiTowerBFS.hpp"
 #include <algorithm>
+#include <queue>
 #include <numeric>
-#include <cassert>
 
 HanoiTowerBFS::HanoiTowerBFS(const unsigned int towerHeight, const unsigned int numberOfPoles)
 {
-    HanoiPole properPole;
+    HanoiState::HanoiPole properPole;
     properPole.resize(towerHeight);
     std::iota(properPole.rbegin(), properPole.rend(), 1);
 
-    root.push_back(properPole);
+    root.state.push_back(properPole);
     for (int i = 1; i < numberOfPoles; ++i) {
-        root.push_back(HanoiPole());
-        solution.push_back(HanoiPole());
+        root.state.push_back(HanoiState::HanoiPole());
+        solution.state.push_back(HanoiState::HanoiPole());
     }
-    solution.push_back(properPole);
+    solution.state.push_back(properPole);
+    root.distance = 0;
 }
 
 int HanoiTowerBFS::solve() {
-    std::vector<HanoiState> nextStates = generateNextValidStates(root);
-    assert(nextStates.size() == 2);
-    visitedStates.push_back(root);
-    for (HanoiState& state: nextStates)
+    int movesNeededToSolveHanoiTower = 0;
+    std::queue<HanoiState> statesToCheck;
+    statesToCheck.push(root);
+    while (!statesToCheck.empty())
     {
-
+        HanoiState stateToCheck = statesToCheck.front();
+        statesToCheck.pop();
+        if (isStateAlreadyChecked(stateToCheck))
+        {
+            continue;
+        }
+        if (isSolution(stateToCheck))
+        {
+            movesNeededToSolveHanoiTower = stateToCheck.distance;
+            break;
+        }
+        visitedStates.push_back(stateToCheck);
+        generateNextValidStates(stateToCheck, statesToCheck);
     }
-    return 42;
+    return movesNeededToSolveHanoiTower;
 }
 
 bool HanoiTowerBFS::isStateAlreadyChecked(const HanoiState &state) const

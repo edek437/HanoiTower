@@ -2,7 +2,6 @@
 #define HANOITOWERBFS_HPP
 
 #include <vector>
-#include <memory>
 #include "HanoiState.hpp"
 
 class HanoiTowerBFS

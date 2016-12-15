@@ -1,37 +1,36 @@
 #include "HanoiState.hpp"
 #include <algorithm>
 
-std::vector<HanoiState> generateNextValidStates(HanoiState const& state)
+void generateNextValidStates(HanoiState const& state, std::queue<HanoiState> & statesToCheck)
 {
-    std::vector<HanoiState> nextStates;
-    for(int poleIdx = 0; poleIdx < state.size(); ++poleIdx)
+    for(int poleIdx = 0; poleIdx < state.state.size(); ++poleIdx)
     {
         HanoiState inputState = state;
-        HanoiPole& currPole = inputState[poleIdx];
+        HanoiState::HanoiPole& currPole = inputState.state[poleIdx];
         if (currPole.empty())
         {
             continue;
         }
-        HanoiDisk topDisk = currPole.back();
+        HanoiState::HanoiDisk topDisk = currPole.back();
         currPole.pop_back();
-        for(int newPoleIdx = 0; newPoleIdx < inputState.size(); ++newPoleIdx)
+        for(int newPoleIdx = 0; newPoleIdx < inputState.state.size(); ++newPoleIdx)
         {
             HanoiState tmpState = inputState;
-            HanoiPole& tmpCurrPole = tmpState[newPoleIdx];
+            HanoiState::HanoiPole& tmpCurrPole = tmpState.state[newPoleIdx];
             tmpCurrPole.push_back(topDisk);
             if (isStateValid(tmpState) && tmpState != state)
             {
-                nextStates.push_back(tmpState);
+                tmpState.distance = state.distance + 1;
+                statesToCheck.emplace(std::move(tmpState));
             }
         }
     }
-    return nextStates;
 }
 
 bool isStateValid(HanoiState const& state)
 {
     bool isValid = true;
-    for(HanoiPole const& pole: state)
+    for(HanoiState::HanoiPole const& pole: state.state)
     {
         if (pole.empty())
         {
