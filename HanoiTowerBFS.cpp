@@ -16,10 +16,13 @@ HanoiTowerBFS::HanoiTowerBFS(const unsigned int towerHeight, const unsigned int 
     }
     solution.state.push_back(properPole);
     root.distance = 0;
+    // this is terrible hach cause i haven't used pointers and vector
+    // reallocation invalidated my references to parents
+    visitedStates.reserve(30000);
 }
 
-int HanoiTowerBFS::solve() {
-    int movesNeededToSolveHanoiTower = 0;
+HanoiState HanoiTowerBFS::solve() {
+    HanoiState solution;
     std::queue<HanoiState> statesToCheck;
     statesToCheck.push(root);
     while (!statesToCheck.empty())
@@ -32,7 +35,7 @@ int HanoiTowerBFS::solve() {
         }
         if (isSolution(stateToCheck))
         {
-            movesNeededToSolveHanoiTower = stateToCheck.distance;
+            solution = stateToCheck;
             break;
         }
         visitedStates.push_back(stateToCheck);
@@ -40,10 +43,11 @@ int HanoiTowerBFS::solve() {
         for (auto& nextState: nextStates)
         {
             nextState.distance = stateToCheck.distance + 1;
+            nextState.parent = &visitedStates.back();
             statesToCheck.emplace(std::move(nextState));
         }
     }
-    return movesNeededToSolveHanoiTower;
+    return solution;
 }
 
 bool HanoiTowerBFS::isStateAlreadyChecked(const HanoiState &state) const
@@ -60,4 +64,9 @@ bool HanoiTowerBFS::isStateAlreadyChecked(const HanoiState &state) const
 bool HanoiTowerBFS::isSolution(HanoiState const& state) const
 {
     return solution == state;
+}
+
+int const& HanoiTowerBFS::getVisitedStatesNumber() const
+{
+    return visitedStates.size();
 }

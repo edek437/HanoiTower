@@ -7,6 +7,7 @@ set(SOURCES
     main.cpp
     HanoiState.cpp
     HanoiTowerBFS.cpp
+    HanoiTowerAStar.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

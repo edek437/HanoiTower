@@ -11,6 +11,7 @@ struct HanoiState {
     using HanoiStateInfo = std::vector<HanoiPole>;
     HanoiStateInfo state;
     Distance distance;
+    HanoiState* parent = nullptr;
     bool operator== (HanoiState const& rhs) const
     {
         return this->state == rhs.state;
@@ -24,6 +25,8 @@ struct HanoiState {
 
 bool isStateValid(HanoiState const& state);
 std::vector<HanoiState> generateNextValidStates(HanoiState const& state);
+int countStateHeuristic(HanoiState const& state);
+void printPathToState(HanoiState const& state);
 
 
 #endif // HANOISTATE_HPP

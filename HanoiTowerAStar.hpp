@@ -1,23 +1,23 @@
-#ifndef HANOITOWERBFS_HPP
-#define HANOITOWERBFS_HPP
+#ifndef HANOITOWERASTAR_HPP
+#define HANOITOWERASTAR_HPP
 
 #include <vector>
 #include "HanoiState.hpp"
 
-class HanoiTowerBFS
+class HanoiTowerAStar
 {
 public:
-    HanoiTowerBFS(const unsigned int towerHeight, const unsigned int numberOfPoles);
-    HanoiState solve();
-    ~HanoiTowerBFS() = default;
+    HanoiTowerAStar(const unsigned int towerHeight, const unsigned int numberOfPoles);
+    int solve();
+    ~HanoiTowerAStar() = default;
     int const& getVisitedStatesNumber() const;
 private:
+    const int moveWeight = 1; //it can be ommited because it's constant
     HanoiState solution;
     HanoiState root;
     bool isStateAlreadyChecked(const HanoiState &state) const;
     bool isSolution(HanoiState const& state) const;
     std::vector<HanoiState> visitedStates;
-
 };
 
-#endif // HANOITOWERBFS_HPP
+#endif // HANOITOWERASTAR_HPP
