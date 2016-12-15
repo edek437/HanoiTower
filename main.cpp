@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     const int numberOfPoles = 3;
-    const int towerHeight = 10;
+    const int towerHeight = 9;
     HanoiTowerBFS htbfs = HanoiTowerBFS(towerHeight, numberOfPoles);
     auto start = std::chrono::steady_clock::now();
     int solutionSteps = htbfs.solve();

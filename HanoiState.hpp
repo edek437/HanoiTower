@@ -3,7 +3,6 @@
 
 #include <utility>
 #include <vector>
-#include <queue>
 
 struct HanoiState {
     using Distance = int;
@@ -24,7 +23,7 @@ struct HanoiState {
 
 
 bool isStateValid(HanoiState const& state);
-void generateNextValidStates(HanoiState const& state, std::queue<HanoiState> &statesToCheck);
+std::vector<HanoiState> generateNextValidStates(HanoiState const& state);
 
 
 #endif // HANOISTATE_HPP

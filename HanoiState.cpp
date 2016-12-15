@@ -1,8 +1,9 @@
 #include "HanoiState.hpp"
 #include <algorithm>
 
-void generateNextValidStates(HanoiState const& state, std::queue<HanoiState> & statesToCheck)
+std::vector<HanoiState> generateNextValidStates(HanoiState const& state)
 {
+    std::vector<HanoiState> nextStates;
     for(int poleIdx = 0; poleIdx < state.state.size(); ++poleIdx)
     {
         HanoiState inputState = state;
@@ -20,11 +21,11 @@ void generateNextValidStates(HanoiState const& state, std::queue<HanoiState> & s
             tmpCurrPole.push_back(topDisk);
             if (isStateValid(tmpState) && tmpState != state)
             {
-                tmpState.distance = state.distance + 1;
-                statesToCheck.emplace(std::move(tmpState));
+                nextStates.emplace_back(std::move(tmpState));
             }
         }
     }
+    return nextStates;
 }
 
 bool isStateValid(HanoiState const& state)

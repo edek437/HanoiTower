@@ -36,7 +36,12 @@ int HanoiTowerBFS::solve() {
             break;
         }
         visitedStates.push_back(stateToCheck);
-        generateNextValidStates(stateToCheck, statesToCheck);
+        auto nextStates = generateNextValidStates(stateToCheck);
+        for (auto& nextState: nextStates)
+        {
+            nextState.distance = stateToCheck.distance + 1;
+            statesToCheck.emplace(std::move(nextState));
+        }
     }
     return movesNeededToSolveHanoiTower;
 }
