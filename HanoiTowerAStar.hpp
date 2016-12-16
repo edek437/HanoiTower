@@ -8,9 +8,9 @@ class HanoiTowerAStar
 {
 public:
     HanoiTowerAStar(const unsigned int towerHeight, const unsigned int numberOfPoles);
-    int solve();
+    HanoiState solve();
     ~HanoiTowerAStar() = default;
-    int const& getVisitedStatesNumber() const;
+    const int getVisitedStatesNumber() const;
 private:
     const int moveWeight = 1; //it can be ommited because it's constant
     HanoiState solution;

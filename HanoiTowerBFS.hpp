@@ -10,7 +10,7 @@ public:
     HanoiTowerBFS(const unsigned int towerHeight, const unsigned int numberOfPoles);
     HanoiState solve();
     ~HanoiTowerBFS() = default;
-    int const& getVisitedStatesNumber() const;
+    const int getVisitedStatesNumber() const;
 private:
     HanoiState solution;
     HanoiState root;

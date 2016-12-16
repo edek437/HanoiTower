@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <queue>
 #include <numeric>
+#include <cassert>
 
 HanoiTowerBFS::HanoiTowerBFS(const unsigned int towerHeight, const unsigned int numberOfPoles)
 {
@@ -22,7 +23,6 @@ HanoiTowerBFS::HanoiTowerBFS(const unsigned int towerHeight, const unsigned int 
 }
 
 HanoiState HanoiTowerBFS::solve() {
-    HanoiState solution;
     std::queue<HanoiState> statesToCheck;
     statesToCheck.push(root);
     while (!statesToCheck.empty())
@@ -35,8 +35,7 @@ HanoiState HanoiTowerBFS::solve() {
         }
         if (isSolution(stateToCheck))
         {
-            solution = stateToCheck;
-            break;
+            return stateToCheck;
         }
         visitedStates.push_back(stateToCheck);
         auto nextStates = generateNextValidStates(stateToCheck);
@@ -47,7 +46,6 @@ HanoiState HanoiTowerBFS::solve() {
             statesToCheck.emplace(std::move(nextState));
         }
     }
-    return solution;
 }
 
 bool HanoiTowerBFS::isStateAlreadyChecked(const HanoiState &state) const
@@ -66,7 +64,7 @@ bool HanoiTowerBFS::isSolution(HanoiState const& state) const
     return solution == state;
 }
 
-int const& HanoiTowerBFS::getVisitedStatesNumber() const
+int const HanoiTowerBFS::getVisitedStatesNumber() const
 {
     return visitedStates.size();
 }

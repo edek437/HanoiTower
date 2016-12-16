@@ -86,26 +86,27 @@ int countStateHeuristic(HanoiState const& state)
     return heuristic;
 }
 
+void printState(HanoiState const& state, int stepNumber = 0){
+    int poleNumber = 1;
+    std::cout << "-------------------------" << std::endl;
+    std::cout << "Step " << stepNumber << std::endl;
+    std::cout << "-------------------------" << std::endl;
+    for(HanoiState::HanoiPole const& pole: state.state)
+    {
+        std::string stringifyedPole="P"+std::to_string(poleNumber)+":\t";
+        for(auto const& disc: pole)
+        {
+            stringifyedPole+=" ";
+            stringifyedPole+=std::to_string(disc);
+        }
+        poleNumber++;
+        std::cout << stringifyedPole << std::endl;
+    }
+    std::cout << "-------------------------" << std::endl;
+}
+
 void printPathToState(HanoiState const& state)
 {
-    auto printState = [](HanoiState const& state){
-        int poleNumber = 1;
-        std::cout << "-------------------------" << std::endl;
-        std::cout << "Step " << state.distance << std::endl;
-        std::cout << "-------------------------" << std::endl;
-        for(HanoiState::HanoiPole const& pole: state.state)
-        {
-            std::string stringifyedPole="P"+std::to_string(poleNumber)+":\t";
-            for(auto const& disc: pole)
-            {
-                stringifyedPole+=" ";
-                stringifyedPole+=std::to_string(disc);
-            }
-            poleNumber++;
-            std::cout << stringifyedPole << std::endl;
-        }
-        std::cout << "-------------------------" << std::endl;
-    };
     HanoiState const* currState = &state;
     std::deque<HanoiState const*> statesToPrint;
     while (currState != nullptr)
@@ -113,9 +114,16 @@ void printPathToState(HanoiState const& state)
         statesToPrint.push_back(currState);
         currState = currState->parent;
     }
+
+    int movesNumber = statesToPrint.size() - 1;
+    std::cout << "Hanoi tower with "
+              << state.state.size() << " poles and "
+              << state.state.at(state.state.size()-1).size() << " disks can be solved in "
+              << movesNumber << " moves." << std::endl;
+
     while(!statesToPrint.empty())
     {
-        printState(*statesToPrint.back());
+        printState(*statesToPrint.back(), movesNumber - statesToPrint.size() + 1);
         statesToPrint.pop_back();
     }
 }
