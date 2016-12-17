@@ -4,11 +4,11 @@
 #include <vector>
 #include "HanoiState.hpp"
 
-class HanoiTowerBFS
+class HanoiTowerBFS: public HanoiTowerAlgorithm
 {
 public:
     HanoiTowerBFS(const unsigned int towerHeight, const unsigned int numberOfPoles);
-    HanoiState solve();
+    HanoiState solve() override;
     ~HanoiTowerBFS() = default;
     const int getVisitedStatesNumber() const;
 private:

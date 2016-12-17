@@ -34,6 +34,11 @@ struct HanoiState {
     }
 };
 
+class HanoiTowerAlgorithm {
+public:
+    virtual HanoiState solve() = 0;
+};
+
 
 bool isStateValid(HanoiState const& state);
 std::vector<HanoiState> generateNextValidStates(HanoiState const& state);
