@@ -59,11 +59,15 @@ int countStateHeuristic(HanoiState const& state)
      *  biggest disc should be on last pole)
      */
     int heuristic = 0;
+    int wage = 3;
+    HanoiState::HanoiDisk diskNumber = 0;
+    auto lastPole = state.state.back();
     for (HanoiState::HanoiPole const& pole: state.state)
     {
-        heuristic+=pole.size();for (HanoiState::HanoiPole const& pole: state.state);
+//        heuristic+=pole.size()*wage;
+        diskNumber+=pole.size();
     }
-    auto lastPole = state.state.back();
+    heuristic=diskNumber;
     for (HanoiState::HanoiPole const& pole: state.state)
     {
         if (pole.size() < 2)
@@ -74,14 +78,58 @@ int countStateHeuristic(HanoiState const& state)
         {
             if(pole.at(i) - pole.at(i+1) == 1)
             {
-                heuristic--;
+                heuristic-=wage;
+            }
+            if(pole.at(i) - pole.at(i+1) == 2)
+            {
+//                std::cout << "HERE" << std::endl;
+                heuristic+=2*wage;
             }
         }
     }
     // biggest disc should be on last pole
-    if (lastPole.size() != 0 && lastPole.at(0) == 3)
+//    if (lastPole.size() != 0 && lastPole.at(0) == 3)
+//    {
+//        heuristic-=wage;
+//    }
+    /*the total number of disks of left and
+     * middle poles) + 2*（number of disks that in the right pole
+     * and smaller than any disk that in left or middle poles
+     */
+
+
+    /* yet another heuristic */
+//    int pegNumber = state.state.size();
+//    for (auto peg = state.state.cbegin(); peg != state.state.cend(); ++peg)
+//    {
+//        for(auto const& d: *peg)
+//        {
+//            heuristic+=d*pegNumber;
+//        }
+//        pegNumber--;
+//        if (peg->size() < 2)
+//        {
+//            heuristic+=wage;
+//            continue;
+//        }
+//        for(int i = 0; i + 2 <= peg->size(); ++i)
+//        {
+//            if(peg->at(i) - peg->at(i+1) == 1)
+//            {
+//                heuristic-=wage;
+//            }
+//            if(peg->at(i) - peg->at(i+1) == 2)
+//            {
+//                std::cout << "HERE" << std::endl;
+//                heuristic+=2*wage;
+//            }
+//        }
+//    }
+//    std::cout << "---HERE---" << std::endl;
+    if (lastPole.size() != 0 && lastPole.at(0) == diskNumber)
     {
-        heuristic--;
+//        std::cout << "HERE2" << std::endl;
+        heuristic-=wage;
     }
     return heuristic;
 }
@@ -90,6 +138,7 @@ void printState(HanoiState const& state, int stepNumber = 0){
     int poleNumber = 1;
     std::cout << "-------------------------" << std::endl;
     std::cout << "Step " << stepNumber << std::endl;
+    std::cout << "Distance " << state.distance << std::endl;
     std::cout << "-------------------------" << std::endl;
     for(HanoiState::HanoiPole const& pole: state.state)
     {

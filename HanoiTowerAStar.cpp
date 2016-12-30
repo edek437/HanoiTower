@@ -18,13 +18,14 @@ HanoiTowerAStar::HanoiTowerAStar(const unsigned int towerHeight, const unsigned 
     }
     solution.state.push_back(properPole);
     root.distance = countStateHeuristic(root) + moveWeight;
-    assert(root.distance == 1 + moveWeight);
     // this is terrible hack cause i haven't used pointers and vector
     // reallocation invalidated my references to parents
     visitedStates.reserve(30000);
 }
 
 HanoiState HanoiTowerAStar::solve() {
+    int baseHeuristic = 100;
+    int baseHeuristicStep = 100;
     std::set<HanoiState> statesToCheck;
     statesToCheck.insert(root);
     while(!statesToCheck.empty())
@@ -44,6 +45,7 @@ HanoiState HanoiTowerAStar::solve() {
             {
                 continue;
             }
+            nextState.distance+=baseHeuristic;
             auto sameStateAs = std::find_if(
                 statesToCheck.cbegin(),
                 statesToCheck.cend(),
@@ -58,14 +60,19 @@ HanoiState HanoiTowerAStar::solve() {
             }
             else
             {
-                int nextStateDistance = countStateHeuristic(nextState) + moveWeight;
+                int nextStateDistance = countStateHeuristic(nextState) + moveWeight + baseHeuristic;
                 if (sameStateAs->distance > nextStateDistance)
                 {
+//                    std::cout << "i am here" << std::endl;
+//                    printState(*sameStateAs,0);
+//                    printState(nextState,0);
+//                    printState(visitedStates.back(),0);
+//                    printState(*sameStateAs->parent, 0);
                     sameStateAs->distance = nextStateDistance;
-                    sameStateAs->parent = &visitedStates.back();
                 }
             }
         }
+        baseHeuristic+=baseHeuristicStep;
     }
     assert(1==2);
 }

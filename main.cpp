@@ -8,8 +8,8 @@
 int main(int argc, char *argv[])
 {
     int numberOfPoles = 3;
-    int towerHeight = 5;
-    std::string algo = "BFS";
+    int towerHeight = 8;
+    std::string algo = "ASTAR";
     int opt_ind = 1;
     while (opt_ind < argc)
     {
